@@ -223,7 +223,7 @@ resource "google_cloud_run_v2_service" "n8n" {
           value = "/"
         }
       }
-      
+
       env {
         name  = "N8N_PORT"
         value = local.n8n_port
@@ -286,17 +286,22 @@ resource "google_cloud_run_v2_service" "n8n" {
           }
         }
       }
-      env {
-        name  = "N8N_HOST"
-        value = "${var.cloud_run_service_name}-${data.google_project.project.number}.${var.gcp_region}.run.app"
+      # N8N_HOST condicional
+      dynamic "env" {
+        for_each = var.n8n_host != "" ? [1] : []
+        content {
+          name  = "N8N_HOST"
+          value = var.n8n_host
+        }
       }
-      env {
-        name  = "WEBHOOK_URL"
-        value = "https://${var.cloud_run_service_name}-${data.google_project.project.number}.${var.gcp_region}.run.app"
-      }
-      env {
-        name  = "N8N_EDITOR_BASE_URL"
-        value = "https://${var.cloud_run_service_name}-${data.google_project.project.number}.${var.gcp_region}.run.app"
+
+      # WEBHOOK_URL condicional
+      dynamic "env" {
+        for_each = var.webhook_url != "" ? [1] : []
+        content {
+          name  = "WEBHOOK_URL"
+          value = var.webhook_url
+        }
       }
       env {
         name  = "N8N_RUNNERS_ENABLED"
@@ -305,6 +310,17 @@ resource "google_cloud_run_v2_service" "n8n" {
       env {
         name  = "N8N_PROXY_HOPS"
         value = "1"
+      }
+
+      # Google OAuth2 - Pre-filled credentials
+      env {
+        name  = "CREDENTIALS_OVERWRITE_DATA"
+        value = jsonencode({
+          googleOAuth2Api = {
+            clientId     = var.google_client_id
+            clientSecret = var.google_client_secret
+          }
+        })
       }
 
       startup_probe {

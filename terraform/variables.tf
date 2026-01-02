@@ -86,3 +86,27 @@ variable "generic_timezone" {
   type        = string
   default     = "UTC"
 }
+
+variable "google_client_id" {
+  description = "Google OAuth Client ID for pre-filled credentials"
+  type        = string
+  sensitive   = true
+}
+
+variable "google_client_secret" {
+  description = "Google OAuth Client Secret for pre-filled credentials"
+  type        = string
+  sensitive   = true
+}
+
+variable "n8n_host" {
+  description = "Public URL of the n8n instance (e.g., n8n-xxxxx-uc.a.run.app). If empty, it will need to be configured after the first deployment."
+  type        = string
+  default     = ""
+}
+
+variable "webhook_url" {
+  description = "Full URL for webhooks (e.g., https://n8n-xxxxx-uc.a.run.app). If empty, it will need to be configured after the first deployment."
+  type        = string
+  default     = ""
+}

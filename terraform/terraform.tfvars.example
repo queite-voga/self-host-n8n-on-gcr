@@ -19,4 +19,14 @@
 # cloud_run_memory = "2Gi"
 # cloud_run_max_instances = 1
 # cloud_run_container_port = 5678
-# generic_timezone = "UTC" 
+# generic_timezone = "UTC"
+
+# Google OAuth2 - pre-fills credentials for all users
+# Configure these variables with your Google Cloud project credentials
+# Users will log in simply by clicking "Sign in with Google"
+# google_client_id = "seu-client-id-aqui.apps.googleusercontent.com"
+# google_client_secret = "seu-client-secret-aqui"
+
+# n8n URLs - Configure after the first deployment (see Terraform outputs)
+# n8n_host = "n8n-xxxxx-uc.a.run.app"  # Sem https://
+# webhook_url = "https://n8n-xxxxx-uc.a.run.app"  # Com https://
